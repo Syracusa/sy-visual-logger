@@ -1,0 +1,14 @@
+
+<mat-toolbar style="position:fixed; left: 0; bottom: 0; width:100%; height:200px;">
+    <textarea #logtextarea disabled style="width: 90%; height: 90%; margin:0 auto;">
+{{log}}
+    </textarea>
+    <div style="width: 8%; height: 90%;" >
+        <div style="font-size:small;" >
+            <mat-slide-toggle (toggleChange)="autoscroll_toggle()" [checked]="autoscroll">
+                Auto Scroll
+            </mat-slide-toggle>
+        </div>
+        <button (click)="clearlog()" style="width: 100%; height: 20%;">Clear</button>
+    </div>
+</mat-toolbar>
