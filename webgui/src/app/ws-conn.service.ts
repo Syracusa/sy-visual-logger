@@ -23,7 +23,7 @@ export class WsConnService {
     this.subject.subscribe({
       next: msg => this.recv_with_websocket(msg),
       error: err => {
-        this.logservice.dlog('Websocket connection error')
+        this.logservice.dlog('Websocket connection error --> ' + err);
         this.ws_opened = false;
       },
       complete: () => {

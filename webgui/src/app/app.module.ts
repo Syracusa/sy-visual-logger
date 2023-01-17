@@ -5,16 +5,22 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LogComponent } from './log/log.component';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
+
 import { MainlistComponent } from './mainlist/mainlist.component';
+import { SessionlistComponent } from './sessionlist/sessionlist.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LogComponent,
-    MainlistComponent
+    MainlistComponent,
+    SessionlistComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +30,7 @@ import { MainlistComponent } from './mainlist/mainlist.component';
     MatExpansionModule,
     MatSlideToggleModule,
     MatToolbarModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
