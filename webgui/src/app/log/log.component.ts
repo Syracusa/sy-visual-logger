@@ -3,8 +3,7 @@ import { LogService } from '../log.service';
 
 @Component({
   selector: 'app-log',
-  templateUrl: './log.component.html',
-  styleUrls: ['./log.component.scss']
+  templateUrl: './log.component.html'
 })
 export class LogComponent implements OnInit {
   @Input() log : string = '';

@@ -3,7 +3,7 @@
 
 #include "ringbuffer.h"
 
-#define DLOG(...) do{ fprintf(stderr, "[Daemon] "#__VA_ARGS__); }while(0);
+#define DLOG(...) do{ fprintf(stderr, "[Daemon] " __VA_ARGS__); }while(0);
 
 #define WEBSOCKET_PORT 8764
 #define DEFAULT_UDP_RECV_PORT 8765

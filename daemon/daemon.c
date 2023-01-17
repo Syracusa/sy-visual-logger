@@ -39,8 +39,8 @@ void hexdump(void* data, int len, FILE* stream)
             ascii_buf[lineoffset] = ptr[i];
 
         /* Print ASCII if end of line */
-        if (lineoffset == BYTE_INLINE - 1)        
-{
+        if (lineoffset == BYTE_INLINE - 1)
+        {
             fprintf(stream, "  %s\n", ascii_buf);
             linecount++;
 
@@ -58,13 +58,30 @@ static int send_buffered_data(struct lws* wsi)
 {
     static unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + MAX_MSGLEN + LWS_SEND_BUFFER_POST_PADDING];
 
-    uint16_t usz;
-    int pres = RingBuffer_pop(dctx.rbuf, &usz, sizeof(usz));
-    if (pres > 0) {
-        RingBuffer_pop(dctx.rbuf, &buf[LWS_SEND_BUFFER_PRE_PADDING], usz);
+    int cont = 1;
+    while (cont)
+    {
+        uint16_t usz;
+        int pres = RingBuffer_pop(dctx.rbuf, &usz, sizeof(usz));
+        if (pres > 0)
+        {
+            int rlen = RingBuffer_pop(dctx.rbuf, &buf[LWS_SEND_BUFFER_PRE_PADDING], usz);
+            if (rlen > 0)
+            {
+                DLOG("Write len : %u\n", usz);
+                lws_write(wsi, &buf[LWS_SEND_BUFFER_PRE_PADDING], usz, LWS_WRITE_TEXT);
+            }
+            else
+            {
+                DLOG("Error: Can't popping msg from buffer\n");
+            }
+        }
+        else
+        {
+            cont = 0;
+        }
     }
 
-    lws_write(wsi, &buf[LWS_SEND_BUFFER_PRE_PADDING], usz, LWS_WRITE_TEXT);
 }
 
 static int http_callback(struct lws* wsi,
@@ -78,7 +95,8 @@ static int http_callback(struct lws* wsi,
         case LWS_CALLBACK_RECEIVE:
             fprintf(stderr, "Receive callback. len %lu\n", len);
             hexdump(in, len, stderr);
-            lws_callback_on_writable_all_protocol(lws_get_context(wsi), lws_get_protocol(wsi));
+            lws_callback_on_writable_all_protocol(lws_get_context(wsi),
+                                                  lws_get_protocol(wsi));
             break;
         case LWS_CALLBACK_SERVER_WRITEABLE:
             fprintf(stderr, "Server Writable!\n");
@@ -103,7 +121,7 @@ static int http_callback(struct lws* wsi,
     return 0;
 }
 
-void *recv_routine(void *arg)
+void* recv_routine(void* arg)
 {
     /* Open socket */
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -111,7 +129,7 @@ void *recv_routine(void *arg)
     { /* Set SO_REUSEADDR option */
         int opt_reuse = 1;
         int res = setsockopt(sock, SOL_SOCKET, SO_REUSEADDR,
-                             (char *)&opt_reuse, sizeof(opt_reuse));
+                             (char*)&opt_reuse, sizeof(opt_reuse));
         if (res < 0)
         {
             fprintf(stderr, "Socket Option SO_REUSEADDR fail with %d(%s)\n",
@@ -120,7 +138,7 @@ void *recv_routine(void *arg)
         }
     }
 
-    { /* Bind address to socket*/
+    { /* Bind address to socket */
         struct sockaddr_in sockadr;
         memset(&sockadr, 0, sizeof(sockadr));
 
@@ -128,7 +146,7 @@ void *recv_routine(void *arg)
         sockadr.sin_port = htons(dctx.udp_port);
         sockadr.sin_addr.s_addr = INADDR_ANY;
 
-        int res = bind(sock, (struct sockaddr *)&sockadr, sizeof(sockadr));
+        int res = bind(sock, (struct sockaddr*)&sockadr, sizeof(sockadr));
         if (res < 0)
         {
             fprintf(stderr, "Bind fail with %d(%s)\n",
@@ -144,13 +162,18 @@ void *recv_routine(void *arg)
     while (1)
     {
         int rlen = recvfrom(sock, buf, MAX_MSGLEN,
-                            0, (struct sockaddr *)&sender_addr, &socklen);
+                            0, (struct sockaddr*)&sender_addr, &socklen);
         if (rlen > 0)
         {
-            fprintf(stderr, "Recv from socket. len : %d, from %s:%u\n", rlen, 
-                    inet_ntoa(sender_addr.sin_addr), 
-                    ntohs(sender_addr.sin_port));
+            DLOG("Recv from socket. len : %d, from %s:%u\n", rlen,
+                 inet_ntoa(sender_addr.sin_addr),
+                 ntohs(sender_addr.sin_port));
 
+            if (RingBuffer_get_remain_bufsize(dctx.rbuf) < (sizeof(uint16_t) + rlen))
+            {
+                DLOG("Buffer full! Discard message...\n");
+                continue;
+            }
             uint16_t usz = rlen;
             RingBuffer_push(dctx.rbuf, &usz, sizeof(usz));
             RingBuffer_push(dctx.rbuf, buf, rlen);
@@ -166,25 +189,28 @@ static void start_recv_udp()
         int res = pthread_create(&t, NULL, recv_routine, NULL /*arg*/);
         if (res < 0)
         {
-            fprintf(stderr, "pthread_create fail!\n");
+            DLOG("pthread_create fail!\n");
             exit(2);
         }
     }
 }
 
-static void init_context(int argc, char *argv[])
+static void init_context(int argc, char* argv[])
 {
     memset(&dctx, 0x00, sizeof(dctx));
-    if (argc == 2){
+    if (argc == 2)
+    {
         dctx.udp_port = atoi(argv[1]);
-    } else {
+    }
+    else
+    {
         dctx.udp_port = DEFAULT_UDP_RECV_PORT;
     }
 
     dctx.rbuf = RingBuffer_new(1024 * 1024 /* 1MB */);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     DLOG("Start daemon...\n");
 

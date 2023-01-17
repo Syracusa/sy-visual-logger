@@ -9,7 +9,7 @@ add_link_options(-fsanitize=address -lcap)
 
 set(LWS_DEPS
 ${PROJECT_SOURCE_DIR}/libwebsockets/build/lib/libwebsockets.a
-# Linking mbedtls libs twice is not a mistake.  
+# It's not a mistake that linking mbedtls libs twice.  
 # https://forums.mbed.com/t/static-build-failing/7514
 ${PROJECT_SOURCE_DIR}/mbedtls/build/library/libmbedcrypto.a
 ${PROJECT_SOURCE_DIR}/mbedtls/build/library/libmbedtls.a

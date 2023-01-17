@@ -15,12 +15,14 @@ int main()
     const char* m1 =
         "{"
         "\"request-type\" : \"stream_log\","
+        "\"session-id\" : \"s1\","
         "\"log\" : \"Test log 1\""
         "}";
 
     const char* m2 =
         "{"
         "\"request-type\" : \"fixed_log\","
+        "\"session-id\" : \"s1\","
         "\"elem-id\" : \"fl1\","
         "\"pos-x\" : \"10\","
         "\"pos-y\" : \"20\","
