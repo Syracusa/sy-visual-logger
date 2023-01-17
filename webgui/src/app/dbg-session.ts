@@ -33,5 +33,7 @@ class DbgElemRect extends DbgElem
 class DbgSession
 {
     id: string = "N/A";
-    dbgElemList: DbgElem[] = [];
+    dbgElemTextList: DbgElemText[] = [];
+    dbgElemTextboxList: DbgElemTextbox[] = [];
+    dbgElemRectList: DbgElemRect[] = [];
 }
