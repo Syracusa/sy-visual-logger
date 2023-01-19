@@ -13,14 +13,15 @@ import { MatChipsModule } from '@angular/material/chips';
 
 import { MainlistComponent } from './mainlist/mainlist.component';
 import { SessionlistComponent } from './sessionlist/sessionlist.component';
-
+import { DbgSessionComponent } from './dbg-session/dbg-session.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogComponent,
     MainlistComponent,
-    SessionlistComponent
+    SessionlistComponent,
+    DbgSessionComponent
   ],
   imports: [
     BrowserModule,
