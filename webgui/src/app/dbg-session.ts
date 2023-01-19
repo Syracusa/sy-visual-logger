@@ -12,28 +12,32 @@ abstract class DbgElem
     draw(): void {}
 }
 
-class DbgElemText extends DbgElem
+export class DbgElemText extends DbgElem
 {
     text: string = "N/A";
 }
 
-class DbgElemTextbox extends DbgElem
+export class DbgElemTextbox extends DbgElem
 {
     text: string = "N/A";
     type: number = 0;
 }
 
-class DbgElemRect extends DbgElem
+export class DbgElemRect extends DbgElem
 {
     text: string = "";
     textRelPosX: number = 0;
     textRelPosY: number = 0;
 }
 
-class DbgSession
+type TextListMap = Map<string, DbgElemText>;
+
+type TextboxListMap = Map<string, DbgElemTextbox>;
+type RectListMap = Map<string, DbgElemRect>;
+export class DbgSession
 {
     id: string = "N/A";
-    dbgElemTextList: DbgElemText[] = [];
-    dbgElemTextboxList: DbgElemTextbox[] = [];
-    dbgElemRectList: DbgElemRect[] = [];
+    dbgElemTextMap: TextListMap = new Map<string, DbgElemText>;
+    dbgElemTextboxMap: TextboxListMap = new Map<string, DbgElemTextbox>;
+    dbgElemRectMap: RectListMap = new Map<string, DbgElemRect>;
 }
