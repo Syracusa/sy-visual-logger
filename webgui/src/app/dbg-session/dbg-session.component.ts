@@ -24,13 +24,15 @@ export class DbgSessionComponent implements OnInit {
                     let elem = this.session.dbgElemTextMap.get(msg['id']);
                     if (elem){
                         elem.text = msg['log'];
+                        console.log(msg['log']);
                     }
                 } else {
                     /* Create val */
                     let telem = new DbgElemText;
                     telem.text = msg['log'];
-                    telem.id = msg['id'];
-                    this.session.dbgElemTextMap.set(msg['id'], telem);
+                    telem.id = msg['elem-id'];
+                    console.log('id : ' + telem.id + ' text : ' + telem.text);
+                    this.session.dbgElemTextMap.set(telem.id, telem);
                 }
                 console.log('fixed log requested');
                 break;

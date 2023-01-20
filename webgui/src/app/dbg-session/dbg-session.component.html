@@ -1,4 +1,9 @@
 <div>
     <!-- iterate dbgelems by ngFor and create each elem -->
-
+    Session
+    <div
+    *ngFor="let txt of session.dbgElemTextMap | keyvalue; let i=index;">
+    {{txt.key}} --> {{txt.value['text']}}
+  </div>
+  
 </div>

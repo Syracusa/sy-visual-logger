@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <linux/socket.h>
 #include <arpa/inet.h>
@@ -58,5 +59,27 @@ int main()
     if (sendlen < 0)
     {
         fprintf(stderr, "Socket send fail(msg 2) %ld(%s)\n", sendlen, strerror(errno));
+    }
+
+
+    for (int i = 0; i < 10; i++){
+        char m3[1000];
+        sprintf(m3, 
+        "{"
+        "\"request-type\" : \"fixed_log\","
+        "\"session-id\" : \"s2\","
+        "\"elem-id\" : \"f2\","
+        "\"pos-x\" : \"10\","
+        "\"pos-y\" : \"20\","
+        "\"log\" : \"Test fixed log %d\""
+        "}", i
+        );
+        sendlen = sendto(sock, m3, strlen(m3), 0, (struct sockaddr*)&sockadr, slen);
+        if (sendlen < 0)
+        {
+            fprintf(stderr, "Socket send fail(msg 3) %ld(%s)\n", sendlen, strerror(errno));
+        }
+        
+        sleep(1);
     }
 }
