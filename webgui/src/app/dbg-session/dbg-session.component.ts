@@ -31,6 +31,10 @@ export class DbgSessionComponent implements OnInit {
                     let telem = new DbgElemText;
                     telem.text = msg['log'];
                     telem.id = msg['elem-id'];
+                    telem.xpos = msg['pos-x'];
+                    telem.ypos = msg['pos-y'];
+                    // telem.xpos = 100;
+                    // telem.ypos = 100;
                     console.log('id : ' + telem.id + ' text : ' + telem.text);
                     this.session.dbgElemTextMap.set(telem.id, telem);
                 }

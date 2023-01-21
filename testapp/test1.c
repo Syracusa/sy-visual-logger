@@ -25,8 +25,8 @@ int main()
         "\"request-type\" : \"fixed_log\","
         "\"session-id\" : \"s1\","
         "\"elem-id\" : \"fl1\","
-        "\"pos-x\" : \"10\","
-        "\"pos-y\" : \"20\","
+        "\"pos-x\" : \"100\","
+        "\"pos-y\" : \"200\","
         "\"log\" : \"Test fixed log 1\""
         "}";
 
