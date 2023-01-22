@@ -80,6 +80,24 @@ int main()
             fprintf(stderr, "Socket send fail(msg 3) %ld(%s)\n", sendlen, strerror(errno));
         }
         
+        sprintf(m3, 
+        "{"
+        "\"request-type\" : \"rect_log\","
+        "\"session-id\" : \"s2\","
+        "\"elem-id\" : \"f2\","
+        "\"pos-x\" : \"%d\","
+        "\"pos-y\" : \"%d\","
+        "\"width\" : \"10\","
+        "\"height\" : \"20\","
+        "\"log\" : \"Test fixed log %d\""
+        "}", (i * 10 + 10), (i * 10 + 10), i
+        );
+        sendlen = sendto(sock, m3, strlen(m3), 0, (struct sockaddr*)&sockadr, slen);
+        if (sendlen < 0)
+        {
+            fprintf(stderr, "Socket send fail(msg 3) %ld(%s)\n", sendlen, strerror(errno));
+        }
+
         sleep(1);
     }
 }

@@ -1,16 +1,24 @@
-<div>
-  <!-- iterate dbgelems by ngFor and create each elem -->
-  Session
+<div style="border:1px solid black; margin: 5px;">
   <br><br><br>
 
-  <svg width="700px" height ="300px">
-    <text *ngFor="let txt of session.dbgElemTextMap | keyvalue; let i=index;" 
-    [attr.x]="txt.value['xpos']"
-    [attr.y]="txt.value['ypos']"
-    >
-    {{txt.value['text']}}
-    </text>      
-  </svg>
+  <div>
+    <svg style="border:1px solid black; margin: 5px; width:99%; height:500px;">
+      <text *ngFor="let txt of session.dbgElemTextMap | keyvalue; let i=index;" 
+        [attr.x]="txt.value['xpos']"
+        [attr.y]="txt.value['ypos']">
+        {{txt.value['text']}}
+      </text>
+
+
+      <rect *ngFor="let rect of session.dbgElemRectMap | keyvalue;" 
+        [attr.x] = "rect.value['xpos']"
+        [attr.y] = "rect.value['ypos']"
+        [attr.width] = "rect.value['width']"
+        [attr.height] = "rect.value['height']">
+      </rect>
+
+    </svg>
+  </div>
   <div *ngFor="let txt of session.dbgElemTextMap | keyvalue; let i=index;">
     {{txt.key}} --> {{txt.value['text']}}
   </div>

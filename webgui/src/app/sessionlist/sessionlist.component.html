@@ -1,6 +1,18 @@
-<mat-chip-list aria-label="Fish selection">
-    <mat-chip>One fish</mat-chip>
-    <mat-chip>Two fish</mat-chip>
-    <mat-chip color="accent" selected>Accent fish</mat-chip>
-    <mat-chip color="warn">Warn fish</mat-chip>
-  </mat-chip-list>
+<br>
+
+<mat-chip-list>
+  <mat-chip *ngFor="let session of sessionList | keyvalue;" 
+            (click)="selected_session_id = session.key"
+            (removed)="remove_seesion_by_id(session.key)"
+            [selected]="selected_session_id == session.key">
+
+    {{session.key}}
+    <button matChipRemove>
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </mat-chip>
+</mat-chip-list>
+
+<app-dbg-session *ngIf="sessionList.has(selected_session_id) == true" 
+[session]="get_session(selected_session_id)">
+</app-dbg-session>

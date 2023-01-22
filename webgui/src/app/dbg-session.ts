@@ -36,6 +36,7 @@ type TextboxListMap = Map<string, DbgElemTextbox>;
 type RectListMap = Map<string, DbgElemRect>;
 export class DbgSession
 {
+    selected: boolean = false;
     id: string = "N/A";
     dbgElemTextMap: TextListMap = new Map<string, DbgElemText>;
     dbgElemTextboxMap: TextboxListMap = new Map<string, DbgElemTextbox>;
