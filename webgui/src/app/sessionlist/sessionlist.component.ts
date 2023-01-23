@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { DbgElemRect, DbgElemText, DbgSession } from '../dbg-session'
+import { DbgElemTextbox, DbgElemRect, DbgElemText, DbgSession } from '../dbg-session'
 import { WsConnService } from '../ws-conn.service'
+import { LogService } from '../log.service';
+
 @Component({
     selector: 'app-sessionlist',
     templateUrl: './sessionlist.component.html'
 })
 export class SessionlistComponent implements OnInit {
     sessionList = new Map<string, DbgSession>;
-
     selected_session_id: string = "";
+    lgs: LogService | undefined;
 
-    constructor(public wcs: WsConnService) {
+    constructor(public wcs: WsConnService,
+        public logservice: LogService) {
         wcs.msgPublisher.subscribe(
             {
                 next: (msg) => {
@@ -18,6 +21,7 @@ export class SessionlistComponent implements OnInit {
                 }
             }
         );
+        this.lgs = logservice;
     }
 
     get_session(id: string): DbgSession {
@@ -45,9 +49,6 @@ export class SessionlistComponent implements OnInit {
         }
 
         switch (msg['request-type']) {
-            case 'stream_log':
-                console.log('stream log requested');
-                break;
             case 'fixed_log':
                 if (session.dbgElemTextMap.has(msg['id'])) {
                     /* Update val */
@@ -61,8 +62,12 @@ export class SessionlistComponent implements OnInit {
                     let telem = new DbgElemText;
                     telem.text = msg['log'];
                     telem.id = msg['elem-id'];
-                    telem.xpos = msg['pos-x'];
-                    telem.ypos = msg['pos-y'];
+
+                    if ('pos-x' in msg)
+                        telem.xpos = msg['pos-x'];
+
+                    if ('pos-y' in msg)
+                        telem.ypos = msg['pos-y'];
 
                     console.log('id : ' + telem.id + ' text : ' + telem.text);
                     session.dbgElemTextMap.set(telem.id, telem);
@@ -79,12 +84,48 @@ export class SessionlistComponent implements OnInit {
                 }
                 if (relem) {
                     relem.id = msg['elem-id'];
-                    relem.xpos = msg['pos-x'];
-                    relem.ypos = msg['pos-y'];
-                    relem.width = msg['width'];
-                    relem.height = msg['height'];
+                    if ('pos-x' in msg)
+                        relem.xpos = msg['pos-x'];
+                    if ('pos-y' in msg)
+                        relem.ypos = msg['pos-y'];
+                    if ('width' in msg)
+                        relem.width = msg['width'];
+                    if ('height' in msg)
+                        relem.height = msg['height'];
                 }
                 break;
+            case 'stream_logbox': {
+                let tbelem: DbgElemTextbox | undefined;
+                if (session.dbgElemTextboxMap.has[msg['id']]) {
+                    tbelem = session.dbgElemTextboxMap.get[msg['id']];
+                } else {
+                    tbelem = new DbgElemTextbox;
+                    session.dbgElemTextboxMap.set(tbelem.id, tbelem);
+                }
+                if (tbelem) {
+                    tbelem.id = msg['elem-id'];
+                    if ('pos-x' in msg)
+                        tbelem.xpos = msg['pos-x'];
+                    if ('pos-y' in msg)
+                        tbelem.ypos = msg['pos-y'];
+                    if ('width' in msg)
+                        tbelem.width = msg['width'];
+                    if ('height' in msg)
+                        tbelem.height = msg['height'];
+                }
+                break;
+            }
+            case 'stream_log': {
+                let tbelem: DbgElemTextbox | undefined;
+                if (session.dbgElemTextboxMap.has[msg['id']]) {
+                    tbelem = session.dbgElemTextboxMap.get[msg['id']];
+                } 
+                
+                if (tbelem)
+                    tbelem.text += msg['log'];
+                console.log('stream log requested');
+                break;
+            }
             default:
                 console.log('Can\'t handle reqtype ' + msg['request-type']);
                 break;

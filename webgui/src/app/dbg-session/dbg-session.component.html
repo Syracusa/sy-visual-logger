@@ -1,6 +1,5 @@
 <div style="border:1px solid black; margin: 5px;">
-  <br><br><br>
-
+  <br>
   <div>
     <svg style="border:1px solid black; margin: 5px; width:99%; height:500px;">
       <text *ngFor="let txt of session.dbgElemTextMap | keyvalue; let i=index;" 
@@ -19,8 +18,18 @@
 
     </svg>
   </div>
-  <div *ngFor="let txt of session.dbgElemTextMap | keyvalue; let i=index;">
-    {{txt.key}} --> {{txt.value['text']}}
-  </div>
 
+
+  <app-log *ngFor="let tb of session.dbgElemTextboxMap | keyvalue;" 
+  [left] = "tb.value.xpos"
+  [top] = "tb.value.ypos"
+  [width] = "tb.value.width"
+  [height] = "tb.value.height"
+  [background_color] = "tb.value.background_color"
+  [id]="tb.value.id"
+  [log]="tb.value.text"></app-log>
+
+
+  <!-- app-log [id]="'testid'" [logbox_style]="'background-color:#aaaaaa; position:fixed; left: 0px; top: 500px; height:300px; width:50%'"></app-log>
+  <app-log [id]="'testid2'" [logbox_style]="'background-color:#111111; position:fixed; left: 300px; top: 500px; height:300px; width:50%'"></app-log -->
 </div>

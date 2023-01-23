@@ -1,14 +1,28 @@
 
-<mat-toolbar style="position:fixed; left: 0; bottom: 0; width:100%; height:200px;">
-    <textarea #logtextarea disabled style="width: 90%; height: 90%; margin:0 auto;">
+<div [style.display]="'flex'"
+[style.flex-direction] = "'column'"
+[style.position] = "'absolute'"
+[style.left.px] = "left"
+[style.top.px] = "top"
+[style.width.px] = "'100'"
+[style.height.px] = "'100'"  
+[style.background-color] = "background_color"  
+>
+
+    <textarea #logtextarea disabled style="width: 99%; height: 100%; margin:2px auto;">
 {{log}}
     </textarea>
-    <div style="width: 8%; height: 90%;" >
-        <div style="font-size:small;" >
-            <mat-slide-toggle (toggleChange)="autoscroll_toggle()" [checked]="autoscroll">
-                Auto Scroll
-            </mat-slide-toggle>
+    <div style="width: 100%;" >
+        <div style='display:flex; flex-direction:row'>
+            <div style="font-size:small;" >
+                <mat-slide-toggle (toggleChange)="autoscroll_toggle()" [checked]="autoscroll">
+                    Auto Scroll
+                </mat-slide-toggle>
+            </div>
+            <div  style="width: 10px; height: 20px;"></div>
+            <button (click)="clearlog()" style="width: 100px; height: 100%;">Clear</button>
+
         </div>
-        <button (click)="clearlog()" style="width: 100%; height: 20%;">Clear</button>
+
     </div>
-</mat-toolbar>
+</div>

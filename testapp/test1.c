@@ -61,6 +61,24 @@ int main()
         fprintf(stderr, "Socket send fail(msg 2) %ld(%s)\n", sendlen, strerror(errno));
     }
 
+    const char* streamlogbox_req =
+        "{"
+        "\"request-type\" : \"stream_logbox\","
+        "\"session-id\" : \"s1\","
+        "\"elem-id\" : \"lgbox1\","
+        "\"pos-x\" : \"10\","
+        "\"pos-y\" : \"200\","
+        "\"witdh\" : \"700\","
+        "\"height\" : \"400\""
+        "}";
+    sendlen = sendto(sock, streamlogbox_req, 
+                        strlen(streamlogbox_req), 0, 
+                        (struct sockaddr*)&sockadr, slen);
+    if (sendlen < 0)
+    {
+        fprintf(stderr, "Socket send fail(msg streamlogbox_req) %ld(%s)\n", sendlen, strerror(errno));
+    }
+
 
     for (int i = 0; i < 10; i++){
         char m3[1000];
@@ -97,6 +115,22 @@ int main()
         {
             fprintf(stderr, "Socket send fail(msg 3) %ld(%s)\n", sendlen, strerror(errno));
         }
+
+
+        sprintf(m3, 
+        "{"
+        "\"request-type\" : \"stream_log\","
+        "\"session-id\" : \"s1\","
+        "\"elem-id\" : \"lgbox1\","
+        "\"log\" : \"Test stream log %d\""
+        "}", i
+        );
+        sendlen = sendto(sock, m3, strlen(m3), 0, (struct sockaddr*)&sockadr, slen);
+        if (sendlen < 0)
+        {
+            fprintf(stderr, "Socket send fail(msg 3) %ld(%s)\n", sendlen, strerror(errno));
+        }
+
 
         sleep(1);
     }
