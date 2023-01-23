@@ -68,8 +68,8 @@ int main()
         "\"elem-id\" : \"lgbox1\","
         "\"pos-x\" : \"10\","
         "\"pos-y\" : \"200\","
-        "\"witdh\" : \"700\","
-        "\"height\" : \"400\""
+        "\"width\" : \"500\","
+        "\"height\" : \"80\""
         "}";
     sendlen = sendto(sock, streamlogbox_req, 
                         strlen(streamlogbox_req), 0, 
@@ -122,7 +122,7 @@ int main()
         "\"request-type\" : \"stream_log\","
         "\"session-id\" : \"s1\","
         "\"elem-id\" : \"lgbox1\","
-        "\"log\" : \"Test stream log %d\""
+        "\"log\" : \"Test stream log %d\\n\""
         "}", i
         );
         sendlen = sendto(sock, m3, strlen(m3), 0, (struct sockaddr*)&sockadr, slen);

@@ -50,9 +50,9 @@ export class SessionlistComponent implements OnInit {
 
         switch (msg['request-type']) {
             case 'fixed_log':
-                if (session.dbgElemTextMap.has(msg['id'])) {
+                if (session.dbgElemTextMap.has(msg['elem-id'])) {
                     /* Update val */
-                    let elem = session.dbgElemTextMap.get(msg['id']);
+                    let elem = session.dbgElemTextMap.get(msg['elem-id']);
                     if (elem) {
                         elem.text = msg['log'];
                         console.log(msg['log']);
@@ -76,8 +76,8 @@ export class SessionlistComponent implements OnInit {
                 break;
             case 'rect_log':
                 let relem: DbgElemRect | undefined;
-                if (session.dbgElemRectMap.has(msg['id'])) {
-                    relem = session.dbgElemRectMap.get(msg['id']);
+                if (session.dbgElemRectMap.has(msg['elem-id'])) {
+                    relem = session.dbgElemRectMap.get(msg['elem-id']);
                 } else {
                     relem = new DbgElemRect;
                     session.dbgElemRectMap.set(relem.id, relem);
@@ -96,11 +96,11 @@ export class SessionlistComponent implements OnInit {
                 break;
             case 'stream_logbox': {
                 let tbelem: DbgElemTextbox | undefined;
-                if (session.dbgElemTextboxMap.has[msg['id']]) {
-                    tbelem = session.dbgElemTextboxMap.get[msg['id']];
+                if (session.dbgElemTextboxMap.has(msg['elem-id'])) {
+                    tbelem = session.dbgElemTextboxMap.get(msg['elem-id']);
                 } else {
                     tbelem = new DbgElemTextbox;
-                    session.dbgElemTextboxMap.set(tbelem.id, tbelem);
+                    session.dbgElemTextboxMap.set(msg['elem-id'], tbelem);
                 }
                 if (tbelem) {
                     tbelem.id = msg['elem-id'];
@@ -117,10 +117,10 @@ export class SessionlistComponent implements OnInit {
             }
             case 'stream_log': {
                 let tbelem: DbgElemTextbox | undefined;
-                if (session.dbgElemTextboxMap.has[msg['id']]) {
-                    tbelem = session.dbgElemTextboxMap.get[msg['id']];
+                if (session.dbgElemTextboxMap.has(msg['elem-id'])) {
+                    tbelem = session.dbgElemTextboxMap.get(msg['elem-id']);
                 } 
-                
+
                 if (tbelem)
                     tbelem.text += msg['log'];
                 console.log('stream log requested');

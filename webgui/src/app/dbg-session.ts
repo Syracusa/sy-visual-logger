@@ -19,10 +19,10 @@ export class DbgElemText extends DbgElem
 
 export class DbgElemTextbox extends DbgElem
 {
-    text: string = "N/A";
+    text: string = "";
     type: number = 0;
 
-    background_color = "#222222";
+    background_color = "#EFEFEF";
 }
 
 export class DbgElemRect extends DbgElem

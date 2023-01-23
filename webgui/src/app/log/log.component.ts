@@ -11,13 +11,23 @@ export class LogComponent implements OnInit {
   @Input() height = 100;
   @Input() left = 10;
   @Input() top = 10;
-  @Input() background_color = '#111111';
+  @Input() background_color = '#EEEEEE';
 
   @Input() id: string = 'default';
-  @Input() log: string = '';
+  _log: string = '';
 
   @ViewChild('logtextarea') logtextarea: ElementRef | undefined;
-  
+
+  @Input() set log(value: string) {
+    this._log = value;
+
+    if (this.autoscroll){
+      var logarea : any = this.logtextarea?.nativeElement;
+      if (logarea != undefined)
+        logarea.scrollTop = logarea.scrollHeight;
+    }
+  }
+
   lgs: LogService | undefined;
   autoscroll: boolean = true;
   logboxScrollHeight: number = 0;
@@ -28,7 +38,7 @@ export class LogComponent implements OnInit {
   }
 
   clearlog(): void {
-    this.log = '';
+    this._log = '';
   }
 
   ngOnInit(): void {
